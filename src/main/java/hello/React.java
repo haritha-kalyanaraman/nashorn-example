@@ -7,7 +7,6 @@ import javax.script.ScriptException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.List;
 
 public class React {
 
@@ -16,10 +15,10 @@ public class React {
         protected NashornScriptEngine initialValue() {
             NashornScriptEngine nashornScriptEngine = (NashornScriptEngine) new ScriptEngineManager().getEngineByName("nashorn");
             try {
+                System.out.println("initializing values");
+                nashornScriptEngine.eval(read("static/react.js"));
                 nashornScriptEngine.eval(read("static/nashorn-polyfill.js"));
-                nashornScriptEngine.eval(read("static/vendor/react.js"));
-                nashornScriptEngine.eval(read("static/vendor/showdown.min.js"));
-                nashornScriptEngine.eval(read("static/commentBox.js"));
+                nashornScriptEngine.eval(read("static/app.js"));
             } catch (ScriptException e) {
                 throw new RuntimeException(e);
             }
@@ -27,9 +26,9 @@ public class React {
         }
     };
 
-    public  String renderCommentBox(List<Comment> comments) {
+    public  String renderFromServer() {
         try {
-            Object html = engineHolder.get().invokeFunction("renderServer", comments);
+            Object html = engineHolder.get().invokeFunction("renderServer");
             return String.valueOf(html);
         }
         catch (Exception e) {

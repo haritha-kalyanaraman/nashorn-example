@@ -37,6 +37,14 @@ dependencies {
     testCompile("junit:junit")
 }
 
+//applicationDefaultJvmArgs = ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005" ]
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
+
+task syncClientFiles(type: Sync) {
+    from './client/index.html'
+    into './src/main/resources/static'
+}
+
